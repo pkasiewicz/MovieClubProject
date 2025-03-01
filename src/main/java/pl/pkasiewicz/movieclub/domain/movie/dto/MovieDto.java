@@ -1,4 +1,4 @@
-package pl.pkasiewicz.movieclub.domain.movie;
+package pl.pkasiewicz.movieclub.domain.movie.dto;
 
 import lombok.Builder;
 import pl.pkasiewicz.movieclub.domain.comment.Comment;
@@ -8,17 +8,17 @@ import pl.pkasiewicz.movieclub.domain.rating.Rating;
 import java.util.Set;
 
 @Builder
-public record Movie(
+public record MovieDto(
         Long id,
         String title,
         String originalTitle,
+        Integer releaseYear,
         String description,
         String shortDescription,
-        Integer releaseYear,
-        String poster,
         String youtubeTrailerId,
-        Genre genre,
+        String poster,
         Set<Comment> comments,
+        Genre genre,
         Set<Rating> ratings
-        ) {
+) {
 }
