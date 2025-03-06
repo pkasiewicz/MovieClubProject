@@ -1,10 +1,9 @@
-package pl.pkasiewicz.movieclub.domain.genre;
+package pl.pkasiewicz.movieclub.domain.genre.dto;
 
 import lombok.Builder;
 
 @Builder
-record Genre(
-        Long id,
+public record GenreRequestDto(
         String name,
         String description
 ) {
