@@ -1,17 +1,20 @@
 package pl.pkasiewicz.movieclub.domain.user;
 
 import lombok.Builder;
-import pl.pkasiewicz.movieclub.domain.comment.Comment;
+import pl.pkasiewicz.movieclub.domain.comment.dto.CommentDto;
+import pl.pkasiewicz.movieclub.domain.rating.dto.RatingDto;
 
+import java.util.List;
 import java.util.Set;
 
 @Builder
-public record User(
+record User(
         Long id,
         String username,
         String email,
         String password,
         Set<UserRole> roles,
-        Set<Comment> comments
+        List<CommentDto> comments,
+        Set<RatingDto> ratings
 ) {
 }

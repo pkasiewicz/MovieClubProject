@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class UserFacadeTest {
 
-    UserFacade userFacade = new UserFacade(
+    private final UserFacade userFacade = new UserFacade(
             new InMemoryUserRepository()
     );
 
@@ -81,5 +81,17 @@ class UserFacadeTest {
         AssertionsForClassTypes.assertThat(thrown)
                 .isInstanceOf(UserNotFoundException.class)
                 .hasMessageContaining("User does not exist");
+    }
+
+    @Test
+    void should_return_user_by_email() {
+        // given
+        RegisterUserDto expected = new RegisterUserDto("someUser", "example@example.com", "somePass");
+        userFacade.registerUser(expected);
+        // when
+        UserDto actual = userFacade.findByEmail(expected.email());
+        // then
+        assertThat(actual).isNotNull();
+        assertThat(actual.email()).isEqualTo(expected.email());
     }
 }

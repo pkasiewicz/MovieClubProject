@@ -29,6 +29,8 @@ class UserMapper {
                 .username(user.username())
                 .email(user.email())
                 .password(user.password())
+                .ratings(user.ratings())
+                .comments(user.comments())
                 .build();
     }
 }

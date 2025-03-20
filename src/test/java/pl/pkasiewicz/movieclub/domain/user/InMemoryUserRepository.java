@@ -7,7 +7,7 @@ import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ThreadLocalRandom;
 
-class InMemoryUserRepository implements UserRepository {
+public class InMemoryUserRepository implements UserRepository {
 
     Map<Long, User> database = new ConcurrentHashMap<>();
 
