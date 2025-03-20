@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicLong;
 
 public class InMemoryGenreRepository implements GenreRepository {
 
-    Map<Long, Genre> database = new ConcurrentHashMap<>();
+    private final Map<Long, Genre> database = new ConcurrentHashMap<>();
+    private final AtomicLong idGenerator = new AtomicLong(1);
 
     @Override
     public Optional<Genre> findByName(String name) {
@@ -40,7 +41,7 @@ public class InMemoryGenreRepository implements GenreRepository {
         if (database.values().stream().anyMatch(entity -> entity.name().equals(genre.name()))) {
             throw new GenreAlreadyExistsException("Genre with this name already exists: " + genre.name());
         }
-        Long id = ThreadLocalRandom.current().nextLong();
+        Long id = idGenerator.getAndIncrement();
         Genre genreToSave = Genre.builder()
                 .id(id)
                 .name(genre.name())

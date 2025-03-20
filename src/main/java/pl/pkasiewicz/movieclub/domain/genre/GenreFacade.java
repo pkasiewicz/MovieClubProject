@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class GenreFacade {
 
-    GenreRepository genreRepository;
+    private final GenreRepository genreRepository;
 
     public GenreResponseDto saveGenre(GenreRequestDto dto) {
         Genre savedGenre = genreRepository.save(GenreMapper.mapToEntity(dto));
