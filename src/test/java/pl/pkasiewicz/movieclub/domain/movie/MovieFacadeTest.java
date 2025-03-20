@@ -2,8 +2,7 @@ package pl.pkasiewicz.movieclub.domain.movie;
 
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Test;
-import pl.pkasiewicz.movieclub.domain.genre.Genre;
-import pl.pkasiewicz.movieclub.domain.movie.dto.MovieSaveDto;
+import pl.pkasiewicz.movieclub.domain.movie.dto.MovieRequestDto;
 import pl.pkasiewicz.movieclub.domain.movie.dto.MovieResponseDto;
 import pl.pkasiewicz.movieclub.domain.movie.exceptions.MovieAlreadyExistsException;
 import pl.pkasiewicz.movieclub.domain.movie.exceptions.MovieNotFoundException;
@@ -23,7 +22,7 @@ class MovieFacadeTest {
     @Test
     void should_add_movie() {
         // given
-        MovieSaveDto expected = new MovieSaveDto("test", "test", 1234, "test", "test", "test", "test", new Genre(1L, "test", "test"));
+        MovieRequestDto expected = new MovieRequestDto("test", "test", 1234, "test", "test", "test", "test", null);
         // when
         MovieResponseDto actual = movieFacade.addMovie(expected);
         // then
@@ -34,15 +33,14 @@ class MovieFacadeTest {
                 () -> assertThat(actual.shortDescription()).isEqualTo(expected.shortDescription()),
                 () -> assertThat(actual.releaseYear()).isEqualTo(expected.releaseYear()),
                 () -> assertThat(actual.poster()).isEqualTo(expected.poster()),
-                () -> assertThat(actual.youtubeTrailerId()).isEqualTo(expected.youtubeTrailerId()),
-                () -> assertThat(actual.genre()).isEqualTo(expected.genre())
+                () -> assertThat(actual.youtubeTrailerId()).isEqualTo(expected.youtubeTrailerId())
         );
     }
 
     @Test
     void should_return_movie_by_title() {
         // given
-        MovieSaveDto movieToSave = new MovieSaveDto("test", "test", 1234, "test", "test", "test", "test", new Genre(1L, "test", "test"));
+        MovieRequestDto movieToSave = new MovieRequestDto("test", "test", 1234, "test", "test", "test", "test", null);
         MovieResponseDto expected = movieFacade.addMovie(movieToSave);
         // when
         MovieResponseDto actual = movieFacade.findMovieByTitle("test");
@@ -53,7 +51,7 @@ class MovieFacadeTest {
 
     @Test
     void should_return_movie_by_id() {
-        MovieSaveDto movieToSave = new MovieSaveDto("test", "test", 1234, "test", "test", "test", "test", new Genre(1L, "test", "test"));
+        MovieRequestDto movieToSave = new MovieRequestDto("test", "test", 1234, "test", "test", "test", "test", null);
         MovieResponseDto expected = movieFacade.addMovie(movieToSave);
         // when
         MovieResponseDto actual = movieFacade.findMovieById(expected.id());
@@ -65,12 +63,12 @@ class MovieFacadeTest {
     @Test
     void should_return_all_movies() {
         // given
-        List<MovieSaveDto> movieSaveDtos = List.of(
-                new MovieSaveDto("test1", "test1", 1234, "test1", "test1", "test1", "test1", new Genre(1L, "test", "test")),
-                new MovieSaveDto("test2", "test2", 1234, "test2", "test2", "test2", "test2", new Genre(1L, "test", "test")),
-                new MovieSaveDto("test3", "test3", 1234, "test3", "test3", "test3", "test3", new Genre(1L, "test", "test"))
+        List<MovieRequestDto> movieRequestDtos = List.of(
+                new MovieRequestDto("test1", "test1", 1234, "test1", "test1", "test1", "test1", null),
+                new MovieRequestDto("test2", "test2", 1234, "test2", "test2", "test2", "test2", null),
+                new MovieRequestDto("test3", "test3", 1234, "test3", "test3", "test3", "test3", null)
         );
-        movieSaveDtos.forEach(movieFacade::addMovie);
+        movieRequestDtos.forEach(movieFacade::addMovie);
         // when
         List<MovieResponseDto> actual = movieFacade.findAllMovies();
         // then
@@ -112,13 +110,25 @@ class MovieFacadeTest {
     @Test
     void should_throw_exception_when_movie_title_duplicate() {
         // given
-        MovieSaveDto movieToSave = new MovieSaveDto("test", "test", 1234, "test", "test", "test", "test", new Genre(1L, "test", "test"));
+        MovieRequestDto movieToSave = new MovieRequestDto("test", "test", 1234, "test", "test", "test", "test", null);
         movieFacade.addMovie(movieToSave);
         // when
         Throwable thrown = catchThrowable(() -> movieFacade.addMovie(movieToSave));
         // then
         AssertionsForClassTypes.assertThat(thrown)
                 .isInstanceOf(MovieAlreadyExistsException.class)
-                .hasMessageContaining(String.format("Movie with this title already exists: %s", movieToSave.title()));
+                .hasMessageContaining("Movie with this title already exists: %s", movieToSave.title());
+    }
+
+    @Test
+    void should_remove_movie_by_id() {
+        // given
+        MovieRequestDto actual = new MovieRequestDto("test", "test", 1234, "test", "test", "test", "test", null);
+        MovieResponseDto movieResponseDto = movieFacade.addMovie(actual);
+        // when
+        MovieResponseDto expected = movieFacade.deleteMovieById(movieResponseDto.id());
+        // then
+        assertThat(movieFacade.findAllMovies()).isEmpty();
+        assertThat(actual).isEqualTo(expected);
     }
 }

@@ -8,4 +8,5 @@ interface MovieRepository {
     Optional<Movie> findById(Long id);
     List<Movie> findAll();
     Movie save(Movie movie);
+    Movie deleteById(Long id);
 }

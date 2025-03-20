@@ -1,7 +1,7 @@
 package pl.pkasiewicz.movieclub.domain.movie;
 
 import lombok.AllArgsConstructor;
-import pl.pkasiewicz.movieclub.domain.movie.dto.MovieSaveDto;
+import pl.pkasiewicz.movieclub.domain.movie.dto.MovieRequestDto;
 import pl.pkasiewicz.movieclub.domain.movie.dto.MovieResponseDto;
 import pl.pkasiewicz.movieclub.domain.movie.exceptions.MovieNotFoundException;
 
@@ -12,8 +12,8 @@ public class MovieFacade {
 
     private final MovieRepository movieRepository;
 
-    public MovieResponseDto addMovie(MovieSaveDto movieSaveDto) {
-        Movie savedMovie = movieRepository.save(MovieMapper.mapToEntity(movieSaveDto));
+    public MovieResponseDto addMovie(MovieRequestDto movieRequestDto) {
+        Movie savedMovie = movieRepository.save(MovieMapper.mapToEntity(movieRequestDto));
         return MovieMapper.mapToMovieResponseDto(savedMovie);
     }
 
@@ -29,6 +29,11 @@ public class MovieFacade {
     public MovieResponseDto findMovieByTitle(String title) {
         Movie movie = movieRepository.findByTitle(title)
                 .orElseThrow(() -> new MovieNotFoundException("Movie with this title does not exist: " + title));
+        return MovieMapper.mapToMovieResponseDto(movie);
+    }
+
+    public MovieResponseDto deleteMovieById(Long id) {
+        Movie movie = movieRepository.deleteById(id);
         return MovieMapper.mapToMovieResponseDto(movie);
     }
 }

@@ -6,11 +6,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.concurrent.atomic.AtomicLong;
 
-class InMemoryMovieRepository implements MovieRepository {
+public class InMemoryMovieRepository implements MovieRepository {
 
-    Map<Long, Movie> database = new ConcurrentHashMap<>();
+    private final Map<Long, Movie> database = new ConcurrentHashMap<>();
+    private final AtomicLong idGenerator = new AtomicLong(1);
 
     @Override
     public Optional<Movie> findByTitle(String title) {
@@ -36,7 +37,7 @@ class InMemoryMovieRepository implements MovieRepository {
     public Movie save(Movie movie) {
         if (database.values().stream().anyMatch(entity -> entity.title().equals(movie.title())))
             throw new MovieAlreadyExistsException("Movie with this title already exists: " + movie.title());
-        Long id = ThreadLocalRandom.current().nextLong();
+        Long id = idGenerator.getAndIncrement();
         Movie movieToSave = Movie.builder()
                 .id(id)
                 .title(movie.title())
@@ -46,9 +47,14 @@ class InMemoryMovieRepository implements MovieRepository {
                 .releaseYear(movie.releaseYear())
                 .poster(movie.poster())
                 .youtubeTrailerId(movie.youtubeTrailerId())
-                .genre(movie.genre())
+                .genres(movie.genres())
                 .build();
         database.put(id, movieToSave);
         return movieToSave;
+    }
+
+    @Override
+    public Movie deleteById(Long id) {
+        return database.remove(id);
     }
 }

@@ -1,10 +1,10 @@
 package pl.pkasiewicz.movieclub.domain.movie.dto;
 
 import lombok.Builder;
-import pl.pkasiewicz.movieclub.domain.comment.Comment;
-import pl.pkasiewicz.movieclub.domain.genre.Genre;
-import pl.pkasiewicz.movieclub.domain.rating.Rating;
+import pl.pkasiewicz.movieclub.domain.comment.dto.CommentDto;
+import pl.pkasiewicz.movieclub.domain.genre.dto.GenreDto;
 
+import java.util.List;
 import java.util.Set;
 
 @Builder
@@ -17,8 +17,9 @@ public record MovieDto(
         String shortDescription,
         String youtubeTrailerId,
         String poster,
-        Set<Comment> comments,
-        Genre genre,
-        Set<Rating> ratings
+        List<CommentDto> comments,
+        Set<GenreDto> genres,
+        double avgRating,
+        int ratingCount
 ) {
 }

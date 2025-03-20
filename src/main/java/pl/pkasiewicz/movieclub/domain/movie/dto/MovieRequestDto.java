@@ -1,10 +1,12 @@
 package pl.pkasiewicz.movieclub.domain.movie.dto;
 
 import lombok.Builder;
-import pl.pkasiewicz.movieclub.domain.genre.Genre;
+import pl.pkasiewicz.movieclub.domain.genre.dto.GenreDto;
+
+import java.util.Set;
 
 @Builder
-public record MovieSaveDto (
+public record MovieRequestDto(
         String title,
         String originalTitle,
         Integer releaseYear,
@@ -12,7 +14,7 @@ public record MovieSaveDto (
         String shortDescription,
         String youtubeTrailerId,
         String poster,
-        Genre genre
+        Set<GenreDto> genres
 ) {
 
 }
