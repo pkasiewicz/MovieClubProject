@@ -1,4 +1,4 @@
-package pl.pkasiewicz.movieclub.domain.comment;
+package pl.pkasiewicz.movieclub.domain.comment.dto;
 
 import lombok.Builder;
 import pl.pkasiewicz.movieclub.domain.movie.dto.MovieDto;
@@ -7,7 +7,7 @@ import pl.pkasiewicz.movieclub.domain.user.dto.UserDto;
 import java.time.LocalDateTime;
 
 @Builder
-record Comment(
+public record CommentDto(
         Long id,
         UserDto author,
         MovieDto movie,

@@ -20,8 +20,8 @@ class CommentFacadeTest {
     @Test
     void should_create_comment() {
         // given
-        UserDto author = new UserDto(1L, "test", "test", "test", null, null);
-        MovieDto movie = new MovieDto(1L, "test", "test", 1234, "test", "test", "test", "test", null, null, null);
+        UserDto author = new UserDto(1L, "test", "test", "test", null, null, null);
+        MovieDto movie = new MovieDto(1L, "test", "test", 1234, "test", "test", "test", "test", null, null, 0, 0);
         CommentRequestDto expected = new CommentRequestDto(author, movie, "test");
         // when
         CommentResponseDto actual = commentFacade.save(expected);
@@ -36,8 +36,8 @@ class CommentFacadeTest {
     @Test
     void should_return_all_comments_for_given_movie_by_id() {
         // given
-        UserDto author = new UserDto(1L, "test", "test", "test", null, null);
-        MovieDto movie = new MovieDto(1L, "test", "test", 1234, "test", "test", "test", "test", null, null, null);
+        UserDto author = new UserDto(1L, "test", "test", "test", null, null, null);
+        MovieDto movie = new MovieDto(1L, "test", "test", 1234, "test", "test", "test", "test", null, null, 0, 0);
         List<CommentRequestDto> comments = List.of(
                 new CommentRequestDto(author, movie, "test1"),
                 new CommentRequestDto(author, movie, "test2"),
