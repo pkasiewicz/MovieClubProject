@@ -26,6 +26,13 @@ public class MovieMapper {
     }
 
     static MovieResponseDto mapToMovieResponseDto(Movie movie) {
+        double avgRating = movie.ratings() == null ? 0 :
+                movie.ratings().stream()
+                        .map(RatingDto::rating)
+                        .mapToDouble(val -> val)
+                        .average()
+                        .orElse(0);
+        int ratingCount = movie.ratings() == null ? 0 : movie.ratings().size();
         return MovieResponseDto.builder()
                 .id(movie.id())
                 .title(movie.title())
@@ -33,19 +40,16 @@ public class MovieMapper {
                 .description(movie.description())
                 .shortDescription(movie.shortDescription())
                 .releaseYear(movie.releaseYear())
-                .genres(movie.genres())
+                .genres(movie.genres() != null ? new HashSet<>(movie.genres()) : new HashSet<>()    )
                 .poster(movie.poster())
                 .youtubeTrailerId(movie.youtubeTrailerId())
+                .avgRating(avgRating)
+                .ratingCount(ratingCount)
+                .comments(movie.comments() != null ? new ArrayList<>(movie.comments()) : new ArrayList<>())
                 .build();
     }
 
     public static MovieDto mapFromMovieResponseDtoToMovieDto(MovieResponseDto movieResponseDto) {
-        double avgRating = movieResponseDto.ratings().stream()
-                .map(RatingDto::rating)
-                .mapToDouble(val -> val)
-                .average()
-                .orElse(0);
-        int ratingCount = movieResponseDto.ratings().size();
         return MovieDto.builder()
                 .id(movieResponseDto.id())
                 .title(movieResponseDto.title())
@@ -56,8 +60,8 @@ public class MovieMapper {
                 .genres(movieResponseDto.genres())
                 .poster(movieResponseDto.poster())
                 .youtubeTrailerId(movieResponseDto.youtubeTrailerId())
-                .avgRating(avgRating)
-                .ratingCount(ratingCount)
+                .avgRating(movieResponseDto.avgRating())
+                .ratingCount(movieResponseDto.ratingCount())
                 .comments(movieResponseDto.comments())
                 .build();
     }

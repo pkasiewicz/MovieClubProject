@@ -3,7 +3,6 @@ package pl.pkasiewicz.movieclub.domain.movie.dto;
 import lombok.Builder;
 import pl.pkasiewicz.movieclub.domain.comment.dto.CommentDto;
 import pl.pkasiewicz.movieclub.domain.genre.dto.GenreDto;
-import pl.pkasiewicz.movieclub.domain.rating.dto.RatingDto;
 
 import java.util.List;
 import java.util.Set;
@@ -13,13 +12,16 @@ public record MovieResponseDto(
         Long id,
         String title,
         String originalTitle,
+        Integer releaseYear,
         String description,
         String shortDescription,
-        Integer releaseYear,
-        String poster,
         String youtubeTrailerId,
-        Set<GenreDto> genres,
+        String poster,
         List<CommentDto> comments,
-        Set<RatingDto> ratings
+        Set<GenreDto> genres,
+        double avgRating,
+        int ratingCount
 ) {
 }
+
+

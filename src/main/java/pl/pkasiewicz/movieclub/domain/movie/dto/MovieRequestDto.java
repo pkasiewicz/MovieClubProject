@@ -16,5 +16,4 @@ public record MovieRequestDto(
         String poster,
         Set<GenreDto> genres
 ) {
-
 }

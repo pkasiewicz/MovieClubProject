@@ -123,10 +123,10 @@ class MovieFacadeTest {
     @Test
     void should_remove_movie_by_id() {
         // given
-        MovieRequestDto actual = new MovieRequestDto("test", "test", 1234, "test", "test", "test", "test", null);
-        MovieResponseDto movieResponseDto = movieFacade.addMovie(actual);
+        MovieRequestDto movie = new MovieRequestDto("test", "test", 1234, "test", "test", "test", "test", null);
+        MovieResponseDto actual = movieFacade.addMovie(movie);
         // when
-        MovieResponseDto expected = movieFacade.deleteMovieById(movieResponseDto.id());
+        MovieResponseDto expected = movieFacade.deleteMovieById(actual.id());
         // then
         assertThat(movieFacade.findAllMovies()).isEmpty();
         assertThat(actual).isEqualTo(expected);
