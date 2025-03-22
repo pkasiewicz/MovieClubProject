@@ -8,8 +8,6 @@ import pl.pkasiewicz.movieclub.domain.rating.dto.RatingDto;
 import pl.pkasiewicz.movieclub.domain.user.UserFacade;
 import pl.pkasiewicz.movieclub.domain.user.dto.UserDto;
 
-import java.util.Optional;
-
 @AllArgsConstructor
 public class RatingFacade {
 
@@ -36,8 +34,9 @@ public class RatingFacade {
         return RatingMapper.mapToRatingDto(savedRating);
     }
 
-    public Optional<Integer> getUserRatingForMovie(String username, Long movieId) {
+    public Integer getUserRatingForMovie(String username, Long movieId) {
         return ratingRepository.findByUser_UsernameAndMovie_Id(username, movieId)
-                .map(Rating::rating);
+                .map(Rating::rating)
+                .orElse(0);
     }
 }
